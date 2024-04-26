@@ -1,26 +1,40 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateGoalDto } from './dto/create-goal.dto';
 import { UpdateGoalDto } from './dto/update-goal.dto';
+import { Goal } from './entities/goal.entity';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class GoalService {
-  create(createGoalDto: CreateGoalDto) {
-    return 'This action adds a new goal';
+  constructor(
+    @InjectModel(Goal.name) private readonly goalModel: Model<Goal>,
+  ) {}
+  async create(createGoalDto: CreateGoalDto) {
+    return await this.goalModel.create(createGoalDto);
   }
 
-  findAll() {
-    return `This action returns all goal`;
+  async findAll() {
+    return await this.goalModel.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} goal`;
+  async findOne(id: string) {
+    return await this.goalModel.findOne({ userId: id });
   }
 
-  update(id: number, updateGoalDto: UpdateGoalDto) {
-    return `This action updates a #${id} goal`;
+  async update(id: string, attrs: Partial<UpdateGoalDto>) {
+    const task = await this.goalModel.findOne({ userId: id });
+    if (!task) {
+      return new NotFoundException('Task not found');
+    }
+    Object.assign(task, attrs);
+    return task.save();
   }
-
-  remove(id: number) {
-    return `This action removes a #${id} goal`;
+  async remove(id: string) {
+    const task = await this.goalModel.findOneAndDelete({ _id: id });
+    if (!task) {
+      throw new NotFoundException('task not found');
+    }
+    return task;
   }
 }
