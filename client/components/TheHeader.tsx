@@ -43,7 +43,7 @@ const TheHeader = () => {
               <div className="flex text-green-500  items-center relative">
                 <Link
                   href="/pages/profile"
-                  className="text-[16px] flex items-center font-bold cursor-pointer"
+                  className="text-[20px] flex items-center font-bold cursor-pointer"
                 >
                   {user.name}
                 </Link>
@@ -53,10 +53,14 @@ const TheHeader = () => {
                     setBurgerMenu(false);
                   }}
                 >
-                  {profileWindow ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                  {profileWindow ? (
+                    <ExpandLessIcon className="text-[30px]" />
+                  ) : (
+                    <ExpandMoreIcon className="text-[30px]" />
+                  )}
                 </div>
               </div>
-              <div className="absolute top-[120px] left-[25%]">
+              <div className="absolute top-[120px] left-[35vw]">
                 {profileWindow && <ProfileWindow />}
               </div>
             </div>

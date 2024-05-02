@@ -3,6 +3,7 @@ import { Nunito } from "next/font/google";
 import "./globals.css";
 import TheHeader from "@/components/TheHeader";
 import TheFooter from "@/components/TheFooter";
+import { ReduxProvider } from "@/store/provider";
 
 const inter = Nunito({ subsets: ["latin"] });
 
@@ -23,8 +24,10 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" />
       </head>
       <body className={`${inter.className} lg:px-[15%]`}>
-        <TheHeader />
-        {children}
+        <ReduxProvider>
+          <TheHeader />
+          {children}
+        </ReduxProvider>
       </body>
     </html>
   );

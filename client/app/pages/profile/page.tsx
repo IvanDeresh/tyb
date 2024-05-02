@@ -3,33 +3,29 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import Button from "@/components/Button";
-interface User {
-  name: string;
-  email: string;
-  password: string;
-  tasksDone: number;
-  _id: string;
-  createdAt: string;
-  __v: number;
-}
+import { User } from "@/types/index";
 
-enum Month {}
 const Page = () => {
   const router = useRouter();
-
   const [user, setUser] = useState<User | null>(null);
-  useEffect(() => {
-    if (localStorage.getItem("user") == undefined) {
-      router.push("/pages/login");
-    }
-  }, []);
-
   useEffect(() => {
     const userData = localStorage.getItem("user");
     if (userData) {
       setUser(JSON.parse(userData));
     }
   }, []);
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    setUser(null);
+    router.push("/");
+    window.location.reload();
+  };
+  useEffect(() => {
+    if (localStorage.getItem("user") == undefined) {
+      router.push("/pages/login");
+    }
+  }, []);
+
   var date = null;
   if (user && user.createdAt) {
     date = new Date(user.createdAt);
@@ -45,6 +41,12 @@ const Page = () => {
               {user ? user.name : "No user found"}
             </span>
           </h1>
+          <div>
+            <span className="text-[18px] font-bold text-green-500">
+              Status:
+            </span>
+            <span className="text-[18px] font-bold text-[#bebdbd]"></span>
+          </div>
           <h2>
             <span className="text-[18px] font-bold text-green-500">Email:</span>{" "}
             <span className="text-[18px] font-bold text-[#bebdbd]">
@@ -64,24 +66,18 @@ const Page = () => {
               Created date:
             </span>{" "}
             <span className="text-[18px] font-bold text-[#bebdbd]">
-              {date && date?.getDate()}.{date && date?.getUTCMonth() + 1}.
-              {date?.getUTCFullYear()}
+              {date && date?.getDate() / 10 < 1
+                ? "0" + date?.getDate()
+                : date?.getDate()}
+              .
+              {date && date?.getUTCMonth() + 1 / 10 < 1
+                ? "0" + date?.getUTCMonth()
+                : date && date?.getUTCMonth() + 1}
+              .{date?.getUTCFullYear()}
             </span>
           </h4>
-          <div>
-            <span className="text-[18px] font-bold text-green-500">
-              Status:
-            </span>
-            <span className="text-[18px] font-bold text-[#bebdbd]"></span>
-          </div>
         </div>
-        <div
-          className="hover:shadow-xl"
-          onClick={() => {
-            localStorage.removeItem("user");
-            router.push("/");
-          }}
-        >
+        <div className="hover:shadow-xl" onClick={handleLogout}>
           <Button bgColor="bg-red-800" label="Logout" />
         </div>
       </div>

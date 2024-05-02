@@ -17,9 +17,11 @@ export class TaskService {
   }
 
   async findOne(id: string) {
-    return await this.taskModel.findOne({ userId: id });
+    return await this.taskModel.find({ userId: id });
   }
-
+  getById(id: string) {
+    return this.taskModel.find({ userId: id });
+  }
   async update(id: string, attrs: Partial<UpdateTaskDto>) {
     const task = await this.taskModel.findOne({ userId: id });
     if (!task) {
