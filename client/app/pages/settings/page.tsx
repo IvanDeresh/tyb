@@ -11,7 +11,7 @@ import MessageIcon from "@mui/icons-material/Message";
 
 const page = () => {
   return (
-    <div className="h-screen mx-[20px] mt-[30px] ">
+    <div className="h-auto mx-[20px] mt-[30px] ">
       <div className="">
         <h1 className="font-bold text-[25px] text-white">Settings</h1>
       </div>

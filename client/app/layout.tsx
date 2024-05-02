@@ -25,7 +25,6 @@ export default function RootLayout({
       <body className={`${inter.className} lg:px-[15%]`}>
         <TheHeader />
         {children}
-        <TheFooter />
       </body>
     </html>
   );

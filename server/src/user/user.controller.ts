@@ -19,7 +19,7 @@ export class UserController {
   @Post('/create')
   async signup(@Body() body: CreateUserDto) {
     const user = await this.userService.create(body);
-    return user;
+    return { user: user };
   }
   @Post('/addNewUser')
   async addNewUser(@Body() body: SignInDto) {
@@ -37,7 +37,7 @@ export class UserController {
     if (user.password != body.password) {
       throw new NotFoundException('incorrect password');
     }
-    return user;
+    return { user: user };
   }
   @Post()
   create(@Body() createUserDto: CreateUserDto) {

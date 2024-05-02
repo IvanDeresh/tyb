@@ -1,6 +1,5 @@
 "use client";
-import React, { useState } from "react";
-import { skill } from "@/assets/icon";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
@@ -10,37 +9,71 @@ import Link from "next/link";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ProfileWindow from "./ProfileWindow";
+import Button from "./Button";
+import favicon from "../app/favicon.ico";
+interface User {
+  name: string;
+  email: string;
+  password: string;
+  tasksDone: number;
+  _id: string;
+  createdAt: string;
+  __v: number;
+}
 
 const TheHeader = () => {
   const [burderMenu, setBurgerMenu] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  useEffect(() => {
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      setUser(JSON.parse(userData));
+    }
+  }, []);
   const [profileWindow, setProfileWindow] = useState(false);
   return (
     <div className="border-b-2 border-[#dfdddd] max-lg:mx-[20px] h-[100px] relative flex items-center justify-between  ">
       <Link href="/">
-        <Image src={skill} alt="skill" width={45} className="h-[45px]" />
+        <Image src={favicon} alt="skill" width={45} className="h-[45px]" />
       </Link>
       <div className="flex justify-between w-[35%]">
-        <div className="flex items-center relative">
-          <Link
-            href="/pages/profile"
-            passHref
-            className="text-[16px] flex items-center font-bold cursor-pointer"
-          >
-            Ivan Deresh
-          </Link>
-          <div
-            onClick={() => {
-              setProfileWindow(!profileWindow);
-            }}
-          >
-            {profileWindow ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-          </div>
-        </div>
-        <div className="absolute top-[120px] left-[20%]">
-          {profileWindow && <ProfileWindow />}
+        <div className="flex justify-center w-[100%]">
+          {user != null ? (
+            <div>
+              <div className="flex text-green-500  items-center relative">
+                <Link
+                  href="/pages/profile"
+                  className="text-[16px] flex items-center font-bold cursor-pointer"
+                >
+                  {user.name}
+                </Link>
+                <div
+                  onClick={() => {
+                    setProfileWindow(!profileWindow);
+                    setBurgerMenu(false);
+                  }}
+                >
+                  {profileWindow ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                </div>
+              </div>
+              <div className="absolute top-[120px] left-[25%]">
+                {profileWindow && <ProfileWindow />}
+              </div>
+            </div>
+          ) : (
+            <Link href="/pages/sign-up">
+              <Button
+                label="Sign up"
+                textColor="text-white"
+                width="w-[150px]"
+                height="h-[35px]"
+                bgColor="bg-green-500"
+              />
+            </Link>
+          )}
         </div>
 
-        <p className="hidden">
+        <div className="hidden">
           {status.map((stat) => (
             <span
               key={stat.id}
@@ -62,13 +95,20 @@ const TheHeader = () => {
               />
             </span>
           ))}
-        </p>
+        </div>
       </div>
       <div
-        onClick={() => setBurgerMenu(!burderMenu)}
-        className="text-[#121212]"
+        onClick={() => {
+          setBurgerMenu(!burderMenu);
+          setProfileWindow(false);
+        }}
+        className="text-green-500"
       >
-        {burderMenu ? <CloseIcon /> : <MenuIcon />}
+        {burderMenu ? (
+          <CloseIcon className="font-bold text-[35px]" />
+        ) : (
+          <MenuIcon className="font-bold text-[35px]" />
+        )}
       </div>
       <div className="absolute right-0 top-[100px]">
         {burderMenu && <Navigation />}

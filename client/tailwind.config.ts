@@ -30,12 +30,27 @@ const config: Config = {
           "0%": { transform: "translateY(-250%)" },
           "100%": { transform: "translateX(0)" },
         },
+        fromTop1: {
+          "0%": { transform: "translateY(50%)" },
+          "100%": { transform: "translateX(0)" },
+        },
+        fromTop2: {
+          "0%": { transform: "translateY(50%)" },
+          "100%": { transform: "translateX(0)" },
+        },
+        fromTop3: {
+          "0%": { transform: "translateY(50%)" },
+          "100%": { transform: "translateX(0)" },
+        },
       },
       animation: {
         fromRight: "fromRight 1s ease-in-out 1",
         fromLeft: "fromLeft 1s ease-in-out 1",
         fromDown: "fromDown 1s ease-in-out 1",
         fromTop: "fromTop 1s ease-in-out 1",
+        fromTop1: "fromTop1 1.5s ease-in-out 1",
+        fromTop2: "fromTop2 1.5s ease-in-out 1",
+        fromTop3: "fromTop3 1.5s ease-in-out 1",
       },
     },
   },
