@@ -22,6 +22,17 @@ export class TaskService {
   getById(id: string) {
     return this.taskModel.find({ userId: id });
   }
+
+  async complete(id: string) {
+    const task = await this.taskModel.findOne({ _id: id });
+    if (!task) {
+      throw new NotFoundException('Task not found');
+    }
+    task.completed = !task.completed;
+    task.save();
+    return await this.taskModel.find();
+  }
+
   async update(id: string, attrs: Partial<UpdateTaskDto>) {
     const task = await this.taskModel.findOne({ userId: id });
     if (!task) {

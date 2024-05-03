@@ -27,7 +27,8 @@ const AddTask = () => {
   };
   useEffect(() => {
     if (localStorage.getItem("user") == null) {
-      router.push("/");
+      router.push("/pages/login");
+      alert("login first");
     }
   }, []);
   useEffect(() => {

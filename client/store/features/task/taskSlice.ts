@@ -25,7 +25,9 @@ const initialState: InitialState = {
 
 export const fetchTasks = createAsyncThunk("task/fetchTasks", async () => {
   try {
-    const response = await axios.get("http://localhost:3001/task");
+    const response = await axios.get(
+      "http://localhost:3001/task/662be9d4049cbf06989b6bc4"
+    );
     return response.data;
   } catch (error) {
     throw error;

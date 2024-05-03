@@ -29,10 +29,13 @@ export class TaskController {
   findOne(@Param('id') id: string) {
     return this.taskService.findOne(id);
   }
-
+  @Patch('/complete/:id')
+  complete(@Param('id') id: string) {
+    return this.taskService.complete(id);
+  }
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
-    return this.taskService.update(id, updateTaskDto);
+  update(@Param('id') id: string, @Body() body: UpdateTaskDto) {
+    return this.taskService.update(id, body);
   }
 
   @Delete(':id')

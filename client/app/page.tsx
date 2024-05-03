@@ -6,17 +6,19 @@ import React, { useEffect, useState } from "react";
 import { work, idea } from "@/assets/icon";
 import axios from "axios";
 import DoneIcon from "@mui/icons-material/Done";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchTasks, selectTasks } from "@/store/features/task/taskSlice";
-import { AppDispatch } from "@/store";
-
+import { useCompletetask, useUserTask } from "@/func/taskFunc";
+import { User } from "@/types";
 export default function Home() {
-  const dispatch = useDispatch<AppDispatch>();
-  const tasks = useSelector(selectTasks);
-
+  const [user, setUser] = useState<User>();
+  const [triger, setTriger] = useState(false);
   useEffect(() => {
-    dispatch(fetchTasks());
-  }, [dispatch]);
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      setUser(JSON.parse(userData));
+    }
+  }, []);
+
+  let task = useUserTask(user?._id || "", triger);
   const [showTasks, setShowTasks] = useState(false);
   const [showGoals, setShowGoals] = useState(false);
   const [showSkills, setShowSkills] = useState(false);
@@ -85,21 +87,53 @@ export default function Home() {
           </h1>
           <div>
             {showTasks && (
-              <div className="min-h-[100px] p-[20px] gap-[10px] h-auto animate-fromTop2 border border-green-500 max-lg:w-[70vw] w-[60vw] flex flex-col  items-center px-[20px] rounded-md">
-                {tasks.map((task: any) => (
-                  <div
-                    key={task._id}
-                    className="border-2 max-lg:w-[60vw] w-[50vw] min-h-[50px] items-center flex justify-center border-[#dfdddd]"
-                  >
-                    <p className="border-2 border-green-500 w-[20px] h-[20px]">
-                      {task.completed && (
-                        <DoneIcon className="text-green-500" />
-                      )}
-                    </p>
-                    <p>Description: {task.description}</p>
-                    <p>Deadline: {task.deadline}</p>
-                  </div>
-                ))}
+              <div className="min-h-[100px] p-[20px] gap-[40px] h-auto animate-fromTop2 border border-green-500 max-lg:w-[70vw] w-[60vw] flex flex-col  items-center px-[20px] rounded-md">
+                {task.map((task) => {
+                  const date = new Date(task.deadline);
+                  const currentDate = new Date();
+
+                  return (
+                    <div key={task._id} className="flex w-full justify-around">
+                      <span
+                        onClick={() => {
+                          useCompletetask(task?._id || "", setTriger);
+                        }}
+                        className="border-2 flex justify-center items-center w-[20px] h-[20px] border-green-500"
+                      >
+                        {task.completed && (
+                          <DoneIcon className="text-green-500" />
+                        )}
+                      </span>
+                      <p className="text-[13px] md:text-[15px] text-green-500 ">
+                        {task.description}
+                      </p>
+                      <p
+                        className={`${
+                          date < currentDate ? "text-red-500" : "text-green-500"
+                        } flex gap-[5px] text-[12px] md:text-[14px] font-bold`}
+                      >
+                        <span>Deadline:</span>
+                        <div></div>
+                        <div className="flex gap-[5px]">
+                          <div>
+                            {date.getUTCHours()}:{date.getMinutes()}{" "}
+                          </div>
+                          |
+                          <div>
+                            {date && date?.getDate() / 10 < 1
+                              ? "0" + date?.getDate()
+                              : date?.getDate()}
+                            .
+                            {date && date?.getUTCMonth() + 1 / 10 < 1
+                              ? "0" + date?.getUTCMonth()
+                              : date && date?.getUTCMonth() + 1}
+                            .{date?.getUTCFullYear()}
+                          </div>
+                        </div>
+                      </p>
+                    </div>
+                  );
+                })}
               </div>
             )}
           </div>
