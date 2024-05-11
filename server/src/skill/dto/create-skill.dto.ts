@@ -1,7 +1,9 @@
-import { IsString, IsNumber, IsOptional } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 export class CreateSkillDto {
-  @IsOptional()
-  houtGoal: number;
+  @IsString()
+  titles: string;
   @IsNumber()
-  hourSpend: number;
+  hourGoal: number;
+  @IsString()
+  userId: string;
 }

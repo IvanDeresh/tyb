@@ -4,13 +4,17 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import React, { useEffect, useState } from "react";
 import { work, idea } from "@/assets/icon";
-import axios from "axios";
-import DoneIcon from "@mui/icons-material/Done";
-import { useCompletetask, useUserTask } from "@/func/taskFunc";
+import { useUserGoals } from "@/func/goalFunc";
+import "react-circular-progressbar/dist/styles.css";
+import { useUserTask } from "@/func/taskFunc";
 import { User } from "@/types";
+import { useUserSkill } from "@/func/skillsFunc";
+import Link from "next/link";
+import SkillComponent from "@/components/SkillComponent";
+import TaskComponent from "@/components/TaskComponent";
+import GoalComponent from "@/components/GoalComponent";
 export default function Home() {
   const [user, setUser] = useState<User>();
-  const [triger, setTriger] = useState(false);
   useEffect(() => {
     const userData = localStorage.getItem("user");
     if (userData) {
@@ -18,7 +22,11 @@ export default function Home() {
     }
   }, []);
 
+  const [triger, setTriger] = useState(false);
+  let skills = useUserSkill(user?._id || "", triger);
   let task = useUserTask(user?._id || "", triger);
+  let goal = useUserGoals(user?._id || "", triger) || [];
+
   const [showTasks, setShowTasks] = useState(false);
   const [showGoals, setShowGoals] = useState(false);
   const [showSkills, setShowSkills] = useState(false);
@@ -63,8 +71,28 @@ export default function Home() {
           </h1>
           <div>
             {showSkills && (
-              <div className="min-h-[100px]  h-auto animate-fromTop1 border border-green-500 max-lg:w-[70vw] w-[60vw] flex items-center px-[20px] rounded-md">
-                1
+              <div className="min-h-[100px] p-[20px] gap-[40px] h-auto animate-fromTop2 border-2 rounded-md border-green-500 max-lg:w-[70vw] w-[60vw] flex flex-col  items-center px-[20px]">
+                {skills.map((sk) => {
+                  return (
+                    <SkillComponent
+                      pathColor="#22c55e"
+                      text="#22c55e"
+                      titles={sk.titles}
+                      bgColor="bg-green-500"
+                      textColor="text-green-500"
+                      hourGoal={sk.hourGoal}
+                      initialHourSpend={sk.initialHourSpend}
+                      id={sk._id}
+                      borderColor="border-green-600"
+                    />
+                  );
+                })}
+                <Link
+                  href="/pages/skills"
+                  className="w-full justify-start ml-[20px] hover:text-green-500 text-green-900 font-bold"
+                >
+                  create skill ...
+                </Link>
               </div>
             )}
           </div>
@@ -87,53 +115,24 @@ export default function Home() {
           </h1>
           <div>
             {showTasks && (
-              <div className="min-h-[100px] p-[20px] gap-[40px] h-auto animate-fromTop2 border border-green-500 max-lg:w-[70vw] w-[60vw] flex flex-col  items-center px-[20px] rounded-md">
+              <div className="min-h-[100px] p-[20px] gap-[40px] h-auto animate-fromTop2 border-2 rounded-md border-green-500 max-lg:w-[70vw] w-[60vw] flex flex-col  items-center px-[20px]">
                 {task.map((task) => {
-                  const date = new Date(task.deadline);
-                  const currentDate = new Date();
-
                   return (
-                    <div key={task._id} className="flex w-full justify-around">
-                      <span
-                        onClick={() => {
-                          useCompletetask(task?._id || "", setTriger);
-                        }}
-                        className="border-2 flex justify-center items-center w-[20px] h-[20px] border-green-500"
-                      >
-                        {task.completed && (
-                          <DoneIcon className="text-green-500" />
-                        )}
-                      </span>
-                      <p className="text-[13px] md:text-[15px] text-green-500 ">
-                        {task.description}
-                      </p>
-                      <p
-                        className={`${
-                          date < currentDate ? "text-red-500" : "text-green-500"
-                        } flex gap-[5px] text-[12px] md:text-[14px] font-bold`}
-                      >
-                        <span>Deadline:</span>
-                        <div></div>
-                        <div className="flex gap-[5px]">
-                          <div>
-                            {date.getUTCHours()}:{date.getMinutes()}{" "}
-                          </div>
-                          |
-                          <div>
-                            {date && date?.getDate() / 10 < 1
-                              ? "0" + date?.getDate()
-                              : date?.getDate()}
-                            .
-                            {date && date?.getUTCMonth() + 1 / 10 < 1
-                              ? "0" + date?.getUTCMonth()
-                              : date && date?.getUTCMonth() + 1}
-                            .{date?.getUTCFullYear()}
-                          </div>
-                        </div>
-                      </p>
-                    </div>
+                    <TaskComponent
+                      description={task.description}
+                      deadline={task.deadline}
+                      setTrigger={setTriger}
+                      id={task._id}
+                      completed={task.completed}
+                    />
                   );
                 })}
+                <Link
+                  href="/pages/tasks"
+                  className="w-full justify-start ml-[20px] hover:text-green-500 text-green-900 font-bold"
+                >
+                  create task ...
+                </Link>
               </div>
             )}
           </div>
@@ -156,8 +155,28 @@ export default function Home() {
           </h1>
           <div>
             {showGoals && (
-              <div className="min-h-[100px] h-auto animate-fromTop3 border border-green-500 max-lg:w-[70vw] w-[60vw] flex items-center px-[20px] rounded-md">
-                1
+              <div className="min-h-[100px] h-auto animate-fromTop3 border-2 rounded-md border-green-500 max-lg:w-[70vw] w-[60vw] flex flex-col gap-[30px] p-[20px] items-center px-[20px]">
+                {goal.map((goal) => {
+                  return (
+                    <GoalComponent
+                      path="#22c55e"
+                      text="#22c55e"
+                      textColor="text-green-500"
+                      borderColor="border-green-800"
+                      bgColor="bg-green-500"
+                      description={goal.description}
+                      progress={goal.progress}
+                      targetDate={goal.targetDate}
+                      id={goal._id}
+                    />
+                  );
+                })}
+                <Link
+                  href="/pages/goals"
+                  className="w-full justify-start ml-[20px] hover:text-green-500 text-green-900 font-bold"
+                >
+                  create goal ...
+                </Link>
               </div>
             )}
           </div>

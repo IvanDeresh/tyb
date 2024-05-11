@@ -9,6 +9,7 @@ interface TaskBody {
   description?: string;
   deadline?: Date;
 }
+
 export const useUserTask = (id: string, triger: boolean) => {
   const [task, setTask] = useState<TaskState[]>([]);
   useEffect(() => {

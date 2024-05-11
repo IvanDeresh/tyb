@@ -34,7 +34,7 @@ export class TaskService {
   }
 
   async update(id: string, attrs: Partial<UpdateTaskDto>) {
-    const task = await this.taskModel.findOne({ userId: id });
+    const task = await this.taskModel.findOne({ _id: id });
     if (!task) {
       return new NotFoundException('Task not found');
     }

@@ -18,8 +18,8 @@ export class GoalService {
     return await this.goalModel.find();
   }
 
-  async findOne(id: string) {
-    return await this.goalModel.findOne({ userId: id });
+  async find(id: string) {
+    return await this.goalModel.find({ userId: id });
   }
 
   async update(id: string, attrs: Partial<UpdateGoalDto>) {

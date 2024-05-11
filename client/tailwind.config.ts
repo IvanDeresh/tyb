@@ -31,15 +31,15 @@ const config: Config = {
           "100%": { transform: "translateX(0)" },
         },
         fromTop1: {
-          "0%": { transform: "translateY(50%)" },
+          "0%": { transform: "translateY(30%)" },
           "100%": { transform: "translateX(0)" },
         },
         fromTop2: {
-          "0%": { transform: "translateY(50%)" },
+          "0%": { transform: "translateY(30%)" },
           "100%": { transform: "translateX(0)" },
         },
         fromTop3: {
-          "0%": { transform: "translateY(50%)" },
+          "0%": { transform: "translateY(30%)" },
           "100%": { transform: "translateX(0)" },
         },
       },

@@ -19,7 +19,9 @@
     "dayjs": "^1.11.11",
     "next": "14.2.3",
     "react": "^18",
+    "react-circular-progressbar": "^2.1.0",
     "react-dom": "^18",
+    "react-move": "^6.5.0",
     "react-redux": "^9.1.2"
   },
   "devDependencies": {

@@ -24,3 +24,12 @@ export interface GoalState {
   userId: string;
   __v: number;
 }
+export interface Skill {
+  _id: string;
+  titles: string;
+  createdAt: Date;
+  initialHourSpend: number;
+  hourGoal: number;
+  userId: string;
+  __v: number;
+}
