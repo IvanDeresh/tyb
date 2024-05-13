@@ -29,8 +29,9 @@ const SkillComponent = ({
   const [finalHour, setFinalHour] = useState(10);
   const stopTimer = async (_id: string, initTime: number) => {
     setTimerRunning(false);
+    console.log(finalHour);
     const updatedInitialHourSpend = initTime + finalHour; // Додати час з таймера до initialHourSpend
-    await useUpdateSkill(_id, { initialHourSpend: updatedInitialHourSpend }); // Викликати useUpdateSkill з оновленим значенням initialHourSpend
+    await useUpdateSkill(_id, updatedInitialHourSpend); // Викликати useUpdateSkill з оновленим значенням initialHourSpend
     setSeconds(0);
     setFinalHour(0);
   };

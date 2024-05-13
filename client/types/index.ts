@@ -1,3 +1,8 @@
+interface Task {
+  id: string;
+  title: string;
+  completed: boolean;
+}
 export interface User {
   name: string;
   email: string;
@@ -22,6 +27,7 @@ export interface GoalState {
   targetDate: Date;
   progress: number;
   userId: string;
+  tasks: Task[];
   __v: number;
 }
 export interface Skill {

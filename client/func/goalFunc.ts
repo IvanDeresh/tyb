@@ -23,3 +23,20 @@ export const useUserGoals = (id: string, triger: boolean) => {
 
   return goal;
 };
+export const useCompleteGoalTask = async (
+  id: string,
+  taskId: string,
+  triggerSetter: Function
+) => {
+  try {
+    const response = await axios.patch(
+      `http://localhost:3001/goal/complete/${id}?taskId=${taskId}`,
+      {}
+    );
+    triggerSetter((prev: any) => !prev);
+  } catch (error) {
+    console.error("Failed to complete useCompletetask", error);
+  }
+};
+
+const useAddtask = async () => {};

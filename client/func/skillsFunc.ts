@@ -20,10 +20,10 @@ export const useUserSkill = (id: string, triger: boolean) => {
 
   return skill;
 };
-export const useUpdateSkill = async (id: string, body: Partial<Skill>) => {
+export const useUpdateSkill = async (id: string, initialHour: number) => {
   try {
     const response = await axios.patch(`http://localhost:3001/skill/${id}`, {
-      body,
+      initialHourSpend: initialHour,
     });
     return response.data;
   } catch (error) {

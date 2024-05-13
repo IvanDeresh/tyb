@@ -4,7 +4,11 @@ import { UpdateGoalDto } from './dto/update-goal.dto';
 import { Goal } from './entities/goal.entity';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-
+interface Task {
+  id: string;
+  title: string;
+  completed: boolean;
+}
 @Injectable()
 export class GoalService {
   constructor(
@@ -22,19 +26,52 @@ export class GoalService {
     return await this.goalModel.find({ userId: id });
   }
 
+  async addTask(id: string, task: Task) {
+    let goal = await this.goalModel.findOne({ _id: id });
+    if (!goal) {
+      throw new NotFoundException('Goal not found');
+    }
+    if (!goal.tasks) {
+      goal.tasks = []; // Ensure tasks array is initialized
+    }
+    goal.tasks.push(task);
+    await goal.save(); // Wait for save operation to complete
+    return goal;
+  }
+
+  async complete(id: string, taskId: string) {
+    let goal = await this.goalModel.findOne({ _id: id });
+    if (!goal) {
+      throw new NotFoundException('Goal not found');
+    }
+    const taskIndex = goal.tasks.findIndex((task) => task.id === taskId);
+
+    if (taskIndex === -1) {
+      throw new NotFoundException('Task not found');
+    }
+
+    goal.tasks[taskIndex].completed = !goal.tasks[taskIndex].completed;
+
+    goal.markModified('tasks');
+
+    await goal.save();
+
+    return goal;
+  }
+
   async update(id: string, attrs: Partial<UpdateGoalDto>) {
-    const task = await this.goalModel.findOne({ userId: id });
-    if (!task) {
+    const goal = await this.goalModel.findOne({ _id: id });
+    if (!goal) {
       return new NotFoundException('Task not found');
     }
-    Object.assign(task, attrs);
-    return task.save();
+    Object.assign(goal, attrs);
+    return goal.save();
   }
   async remove(id: string) {
-    const task = await this.goalModel.findOneAndDelete({ _id: id });
-    if (!task) {
+    const goal = await this.goalModel.findOneAndDelete({ _id: id });
+    if (!goal) {
       throw new NotFoundException('task not found');
     }
-    return task;
+    return goal;
   }
 }

@@ -35,6 +35,8 @@ const page = () => {
             <GoalComponent
               path="#22c55e"
               text="#22c55e"
+              setTriger={setTriger}
+              tasks={goal.tasks}
               textColor="text-green-500"
               borderColor="border-green-800"
               bgColor="bg-green-500"

@@ -1,6 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-
+interface Task {
+  id: string;
+  title: string;
+  completed: boolean;
+}
 @Schema()
 export class Goal extends Document {
   @Prop({ required: true })
@@ -11,6 +15,9 @@ export class Goal extends Document {
 
   @Prop({ default: 0 })
   progress: number;
+
+  @Prop()
+  tasks: Task[];
 
   @Prop({ required: true })
   userId: string;
