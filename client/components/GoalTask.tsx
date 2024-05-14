@@ -39,9 +39,9 @@ const GoalTask: React.FC<{
         </div>
       </div>
       <div
-        className={`w-[100%] ${
+        className={`w-[100%] flex flex-col gap-[10px] ${
           tasks.length > 4 && "overflow-y-scroll"
-        } min-h-[100px] `}
+        } h-[100px] `}
       >
         {tasks &&
           tasks.map((task, index) => (

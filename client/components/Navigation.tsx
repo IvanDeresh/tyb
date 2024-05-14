@@ -9,7 +9,7 @@ import SportsScoreIcon from "@mui/icons-material/SportsScore";
 
 const Navigation = () => {
   return (
-    <div className="md:border-l-2 border-[#dfdddd]  h-[85vh] animate-fromRight gap-[50px] w-[200px] pt-[70px] flex  items-center flex-col">
+    <div className="md:border-l-2 z-50 border-[#dfdddd]  h-[85vh] animate-fromRight gap-[50px] w-[200px] pt-[70px] flex  items-center flex-col">
       <h1 className="text-green-500 font-bold text-[25px]">Try your best</h1>
       <ul className="text-white flex flex-col gap-[10px] text-[20px]">
         <Link href="/pages/tasks" className="flex items-center gap-[10px]">

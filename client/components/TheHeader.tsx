@@ -114,7 +114,7 @@ const TheHeader = () => {
           <MenuIcon className="font-bold text-[35px]" />
         )}
       </div>
-      <div className="absolute right-0 top-[100px]">
+      <div className="absolute z-50 right-0 top-[100px]">
         {burderMenu && <Navigation />}
       </div>
     </div>

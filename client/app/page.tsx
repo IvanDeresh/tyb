@@ -159,6 +159,8 @@ export default function Home() {
                 {goal.map((goal) => {
                   return (
                     <GoalComponent
+                      setTriger={setTriger}
+                      tasks={goal.tasks}
                       path="#22c55e"
                       text="#22c55e"
                       textColor="text-green-500"

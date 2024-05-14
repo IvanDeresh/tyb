@@ -42,7 +42,7 @@ const GoalComponent = ({
   return (
     <div
       key={id}
-      className="flex flex-col w-full p-[20px] border border-green-500"
+      className="flex flex-col w-full p-[20px] border-b-4 border-green-200"
     >
       <div className="flex w-full justify-between">
         <span
